@@ -2,14 +2,13 @@ import { useOktaAuth } from '@okta/okta-react';
 import React, { useState, useEffect } from 'react';
 import { Button,Header} from 'semantic-ui-react';
 
-const SERVER = 'http://localhost:4000/latest/fruits';
+const SERVER = process.env.REACT_APP_API_URL;
 
 
 const Home = () => {
   const { authState, oktaAuth } = useOktaAuth();
   const [userInfo, setUserInfo] = useState(null);
   const [token, setToken] = useState(null);
-  const [error, setError] = useState(null);
   const [items, setItems] = useState([]);
 
   const ItemList = (props) => {
@@ -38,11 +37,12 @@ const Home = () => {
     }
   }, [authState, oktaAuth]); // Update if authState changes
 
-  useEffect(async () => {
+  useEffect(() => {
+    (async () => { 
     if (token) {
       const headers = { Authorization: `Bearer ${token}` };
       try {
-        const res = await fetch(SERVER, { headers });
+        const res = await fetch(`${SERVER}/fruits`, { headers });
         if (res.status === 200) {
           const data = await res.json();
           console.log(data)
@@ -50,13 +50,12 @@ const Home = () => {
         } else {
           console.error(res.status, res.detail);
           setItems([]);
-          setError(res.status)
         }
       } catch (e) {
         console.error(e);
-        setError(`Error when calling ${SERVER}`);
       }
     }
+  }) ()   
   }, [token]);
 
 

@@ -35,13 +35,16 @@ services:
   client:
     build: client
     image: react-auth/client
-    command: ["npm", "start", "--port ${UI_PORT}"]
+    command: ["npm", "start"]
     volumes:
       - ./client:/frontend
       # One-way volume to use node_modules from inside image
-      - node-modules:/frontend/node_modules
+      # - node-modules:/frontend/node_modules
     environment:
       - NODE_ENV=development
+      - NODE_OPTIONS=--openssl-legacy-provider
+      - REACT_APP_API_URL=http://localhost:${API_PORT}/latest
+
     env_file:
       - .env
     ports:
@@ -49,5 +52,5 @@ services:
     depends_on:
       - api
 
-volumes:
-  node-modules:
+# volumes:
+#   node-modules:
