@@ -9,7 +9,6 @@ const Home = () => {
   const { authState, oktaAuth } = useOktaAuth();
   const [userInfo, setUserInfo] = useState(null);
   const [token, setToken] = useState(null);
-  const { fetchNewItems, setFetchNewItems } = useState(null);
   const [error, setError] = useState(null);
   const [items, setItems] = useState([]);
 
@@ -58,7 +57,7 @@ const Home = () => {
         setError(`Error when calling ${SERVER}`);
       }
     }
-  }, [token,fetchNewItems]);
+  }, [token]);
 
 
 

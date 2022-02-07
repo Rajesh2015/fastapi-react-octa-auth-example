@@ -33,8 +33,8 @@ services:
       - db
 
   client:
-    build: auth-react-sample-app
-    image: react-auth/auth-react-sample-app
+    build: client
+    image: react-auth/client
     command: ["npm", "start", "--port ${UI_PORT}"]
     volumes:
       - ./client:/frontend
@@ -42,7 +42,6 @@ services:
       - node-modules:/frontend/node_modules
     environment:
       - NODE_ENV=development
-      - REACT_APP_API_URL=http://localhost:${API_PORT}/latest
     env_file:
       - .env
     ports:

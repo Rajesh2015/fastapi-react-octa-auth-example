@@ -1,2 +1,6 @@
 # python Binary
 __pycache__
+
+# VScode
+.vscode
+.metals
