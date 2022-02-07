@@ -1,0 +1,54 @@
+version: '3.7'
+
+services:
+  db:
+    image: postgres
+    environment:
+      - POSTGRES_HOST_AUTH_METHOD=trust
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=postgres
+    env_file:
+      - .env
+    ports:
+      - "${POSTGRES_PORT}:${POSTGRES_PORT}"
+    command: -p ${POSTGRES_PORT}
+
+
+  api:
+    build: api
+    image: ml-boilerplate/api
+    command:
+      uvicorn api.main:app --host 0.0.0.0 --port ${API_PORT}
+    volumes:
+      - ./api:/ml-boilerplate/api
+    environment:
+      - WEB_CONCURRENCY=2
+      - DB_ENDPOINT=postgresql://postgres:postgres@db:${POSTGRES_PORT}
+    env_file:
+      - .env
+    ports:
+      - "${API_PORT}:${API_PORT}"
+    depends_on:
+      - db
+
+  client:
+    build: auth-react-sample-app
+    image: react-auth/auth-react-sample-app
+    command: ["npm", "start", "--port ${UI_PORT}"]
+    volumes:
+      - ./client:/frontend
+      # One-way volume to use node_modules from inside image
+      - node-modules:/frontend/node_modules
+    environment:
+      - NODE_ENV=development
+      - REACT_APP_API_URL=http://localhost:${API_PORT}/latest
+    env_file:
+      - .env
+    ports:
+      - '${UI_PORT}:${UI_PORT}'
+    depends_on:
+      - api
+
+volumes:
+  node-modules:

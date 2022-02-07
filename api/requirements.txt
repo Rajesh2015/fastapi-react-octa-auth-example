@@ -1,0 +1,14 @@
+fastapi~=0.70.0
+uvicorn~=0.15.0
+fastapi_versioning
+vine==1.3.0
+requests==2.25.1
+psycopg2-binary==2.8.6
+Flask-Migrate==3.0.1
+Flask-SQLAlchemy==2.5.1
+sqlalchemy==1.4.23
+starlette~=0.16.0
+SQLModel==0.0.4
+python-dotenv
+okta_jwt
+httpx
