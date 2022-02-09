@@ -21,7 +21,7 @@ services:
     command:
       uvicorn api.main:app --host 0.0.0.0 --port ${API_PORT}
     volumes:
-      - ./api:/ml-boilerplate/api
+      - ./api:/fastapi-react-okta-auth/api
     environment:
       - WEB_CONCURRENCY=2
       - DB_ENDPOINT=postgresql://postgres:postgres@db:${POSTGRES_PORT}
